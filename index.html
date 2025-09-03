@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Practice</title>
     <link rel="stylesheet" href="style.css">
-    </style>
+
 </head>
 
 <body>
@@ -24,6 +24,9 @@
       ">
             <h2>Про мене</h2>
             <p>Я вчуся бути фулстек розробником</p>
+            <input type="text" id="username" placeholder="Введи своє імʼя">
+            <button onclick="greet()">Привітай мене</button>
+            <p id="greeting"></p>
         </section>
         <section id="hobbies" class="card
       ">
@@ -37,18 +40,63 @@
         </section>
         <section id="contacts" class="card
       ">
-            <a href="mailto:test@gmail.com">Написати на пошту
+            <form id="contact-form" novalidate>
+                <div class="field">
+                    <label for="name">імʼя</label>
+                    <input type="text" id="name" placeholder="Імʼя" required minlength="2">
+                    <small class="error" id="err-name"></small>
+                </div>
 
-            </a>
+
+                <div class="field">
+                    <label for="email">email</label>
+                    <input type="email" id="email" placeholder="you@example.com" required>
+
+                    <small class="error" id="err-email"></small>
+
+                </div>
+
+                <div class="field">
+                    <label for="message">Повідомлення</label>
+                    <textarea id="message" placeholder="Ваше повідомлення" required minlength="5"></textarea>
+                    <small class="error" id="err-message"></small>
+                </div>
+
+
+
+                </div>
+
+                <div class="hp" aria-hidden="true">
+                    <label for="company">Компанія</label>
+                    <input type="text" id="company" name="company" tabindex="-1" autocomplete="off">
+
+                </div>
+
+                <button id="send-btn" type="submit">Надіслати</button>
+
+
+
+            </form>
+
+            <p id="response" aria-live="polite" role="status"></p>
+
+
+
+
+
         </section>
     </main>
 
     <footer>
         <p>Практика всьому голова</p>
     </footer>
-  
 
 
+
+
+    <script src="index.js">
+
+    </script>
 
 </body>
 
