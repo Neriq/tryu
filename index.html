@@ -4,99 +4,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Practice</title>
+    <meta name="description" content="Особиста сторінка">
     <link rel="stylesheet" href="style.css">
+    <script src="assets/js/main.js" defer></script>
 
 </head>
 
 <body>
-    <header>
+    <header class="site-header">
         <h1>Сайт візитка</h1>
-        <nav>
-            <a href="#">Про мене</a>
-            <a href="#">Хобі</a>
-            <a href="#">Контакти</a>
+        <nav class="nav" aria-label="Головна Навігація">
+            <a href="#" class="nav__link">Про мене</a>
+            <a href="#" class="nav__link">Хобі</a>
+            <a href="#" class="nav__link">Контакти</a>
         </nav>
     </header>
 
-    <main>
-        <section id="about" class="card
+    <main id="main">
+        <section class="hero section">
+            <h1>Привіт, я Хтось</h1>
+            <p class="muted">Починаючий фулстек-розробник. Вчуся щодня і збираю перші проєкти.</p>
+            <a href="#work" class="btn btn--primary">Подивитись проєкти</a>
+        </section>
+        <section id="about" class="section
       ">
             <h2>Про мене</h2>
             <p>Я вчуся бути фулстек розробником</p>
-            <input type="text" id="username" placeholder="Введи своє імʼя">
-            <button onclick="greet()">Привітай мене</button>
-            <p id="greeting"></p>
-        </section>
-        <section id="hobbies" class="card
-      ">
-            <h2>Хобі</h2>
-            <ul>
-                <li>Кодинг</li>
-                <li>Автомобілі</li>
-                <li>Ютубчик</li>
-            </ul>
 
         </section>
-        <section id="contacts" class="card
+
+
+        <section id="work" class="section
       ">
-            <form id="contact-form" novalidate>
-                <div class="field">
-                    <label for="name">імʼя</label>
-                    <input type="text" id="name" placeholder="Імʼя" required minlength="2">
-                    <small class="error" id="err-name"></small>
-                </div>
-
-
-                <div class="field">
-                    <label for="email">email</label>
-                    <input type="email" id="email" placeholder="you@example.com" required>
-
-                    <small class="error" id="err-email"></small>
-
-                </div>
-
-                <div class="field">
-                    <label for="message">Повідомлення</label>
-                    <textarea id="message" placeholder="Ваше повідомлення" required minlength="5"></textarea>
-                    <small class="error" id="err-message"></small>
-                </div>
+            <h2>проєкти</h2>
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Лендінг</h3>
+                    <p class="muted">Простий адаптивний лендінг з HTML+CSS.</p>
+                </article>
+                <article class="card">
+                    <h3>Міні-блог</h3>
+                    <p class="muted">Статті додаються з JS.</p>
+                </article>
+                <article class="card">
+                    <h3>Контакт-форма</h3>
+                    <p class="muted">Валідація на клієнті, далі зробимо бекенд.</p>
+                </article>
+            </div>
+        </section>
 
 
 
-                </div>
-
-                <div class="hp" aria-hidden="true">
-                    <label for="company">Компанія</label>
-                    <input type="text" id="company" name="company" tabindex="-1" autocomplete="off">
-
-                </div>
-
-                <button id="send-btn" type="submit">Надіслати</button>
-
-
-
+        <section id="contact" class="section
+      ">
+            <h2>Контакти</h2>
+            <form id="contact-form" class="form">
+                <input type="text" id="name" placeholder="Ім’я">
+                <input type="email" id="email" placeholder="Email">
+                <textarea id="message" placeholder="Ваше повідомлення"></textarea>
+                <button type="submit" class="btn">Надіслати</button>
             </form>
-
-            <p id="response" aria-live="polite" role="status"></p>
-
-
-
-
+            <p id="response" class="muted" aria-live="polite"></p>
 
         </section>
     </main>
 
-    <footer>
+    <footer class="site-footer">
         <p>Практика всьому голова</p>
+        © 2025 Хтось
     </footer>
 
 
 
-
-    <script src="index.js">
-
-    </script>
 
 </body>
 
