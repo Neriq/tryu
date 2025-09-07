@@ -6,6 +6,7 @@
   --card: #fff;
   --radius: 14px;
   --max: 960px;
+  --header-h: 86px;
 }
 
 * {
@@ -15,6 +16,9 @@ html,
 body {
   margin: 0;
   padding: 0;
+}
+main > section {
+  scroll-margin-top: var(--header-h);
 }
 
 h1 {
@@ -60,7 +64,6 @@ body {
 .section {
   max-width: var(--max);
   margin: 0 auto;
-
 }
 
 .site-header,
@@ -210,12 +213,11 @@ body {
   }
 }
 
-
 .form {
   display: grid;
   gap: 12px;
-  max-width: 600px;       /* обмежуємо ширину */
-  margin: 0 auto;         /* центр по горизонталі */
+  max-width: 600px; /* обмежуємо ширину */
+  margin: 0 auto; /* центр по горизонталі */
 }
 .form input,
 .form textarea {
