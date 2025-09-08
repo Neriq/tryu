@@ -2,6 +2,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   setCurrentYear();
   setupContactForm();
+  renderProjects();
   // опційно: можемо відрендерити проєкти з JS-масиву:
   // renderProjects();
 });
@@ -86,3 +87,46 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
     });
   });
 });
+
+const PROJECTS = [
+  {
+    title: "Ледінг",
+    desc: "Адаптивний лендінг на HTML + CSS.",
+    url: "#",
+    tags: ["HTML", "CSS"],
+  },
+  {
+    title: "Міні-Блог",
+    desc: "Рендер статей із JS-масиву.",
+    url: "#",
+    tags: ["JS"],
+  },
+  {
+    title: "Контакт-форма",
+    desc: "Валідація полів на клієнті.",
+    url: "#",
+    tags: ["JS", "Forms"],
+  },
+];
+
+function renderProjects(list = PROJECTS) {
+  const wrap = document.querySelector('#projects');
+  if (!wrap) return;
+
+  wrap.innerHTML = '';                     // очистити поточний вміст
+  const frag = document.createDocumentFragment();
+
+  list.forEach(p => {
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML = `
+      <h3>${p.title}</h3>
+      <p class="muted">${p.desc}</p>
+      ${p.tags?.length ? `<div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>` : ''}
+      ${p.url ? `<a class="btn" href="${p.url}" target="_blank" rel="noopener noreferrer">Відкрити</a>` : ''}
+    `;
+    frag.appendChild(card);
+  });
+
+  wrap.appendChild(frag);
+}
