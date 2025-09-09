@@ -261,3 +261,51 @@ body {
   background: #eef2ff;
   color: #3730a3;
 }
+
+.btn,
+.card {
+  transition: all 0.25s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero h1,
+.hero p,
+.hero,
+.btn {
+  opacity: 0.3;
+  animation: fadeInUp 0.6 ease forwards;
+}
+
+.hero h1 {
+  animation-delay: 0.1s;
+}
+
+.hero p {
+  animation-delay: 0.3s;
+}
+
+.hero,
+.btn {
+  animation-delay: 0.5s;
+}
+
+.card {
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.card.reveal {
+  transform: translateY(0);
+  opacity: 1;
+  transition: all 0.6 ease;
+}

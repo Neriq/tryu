@@ -3,8 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setCurrentYear();
   setupContactForm();
   renderProjects();
-  // опційно: можемо відрендерити проєкти з JS-масиву:
-  // renderProjects();
+  setupScrollAnimations();
 });
 
 /** Поставити поточний рік у футері */
@@ -110,23 +109,49 @@ const PROJECTS = [
 ];
 
 function renderProjects(list = PROJECTS) {
-  const wrap = document.querySelector('#projects');
+  const wrap = document.querySelector("#projects");
   if (!wrap) return;
 
-  wrap.innerHTML = '';                     // очистити поточний вміст
+  wrap.innerHTML = ""; // очистити поточний вміст
   const frag = document.createDocumentFragment();
 
-  list.forEach(p => {
-    const card = document.createElement('article');
-    card.className = 'card';
+  list.forEach((p) => {
+    const card = document.createElement("article");
+    card.className = "card";
     card.innerHTML = `
       <h3>${p.title}</h3>
       <p class="muted">${p.desc}</p>
-      ${p.tags?.length ? `<div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>` : ''}
-      ${p.url ? `<a class="btn" href="${p.url}" target="_blank" rel="noopener noreferrer">Відкрити</a>` : ''}
+      ${
+        p.tags?.length
+          ? `<div class="tags">${p.tags
+              .map((t) => `<span class="tag">${t}</span>`)
+              .join("")}</div>`
+          : ""
+      }
+      ${
+        p.url
+          ? `<a class="btn" href="${p.url}" target="_blank" rel="noopener noreferrer">Відкрити</a>`
+          : ""
+      }
     `;
     frag.appendChild(card);
   });
 
   wrap.appendChild(frag);
+}
+
+function setupScrollAnimations() {
+  const cards = document.querySelectorAll(".card");
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("reveal");
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.2 }
+  );
+  cards.forEach((c) => io.observe(c));
 }
