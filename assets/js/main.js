@@ -2,8 +2,11 @@
 document.addEventListener("DOMContentLoaded", () => {
   setCurrentYear();
   setupContactForm();
+  setupSmoothScroll();
   renderProjects();
   setupScrollAnimations();
+
+  setupBurgerMenu();
 });
 
 /** Поставити поточний рік у футері */
@@ -154,4 +157,74 @@ function setupScrollAnimations() {
     { threshold: 0.2 }
   );
   cards.forEach((c) => io.observe(c));
+}
+
+function setupSmoothScroll() {
+  const links = document.querySelectorAll('a[href^="#"]');
+
+  // висота шапки, якщо вона sticky
+  const header = document.querySelector(".site-header");
+  const headerH = header ? header.offsetHeight : 0;
+
+  links.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const href = link.getAttribute("href");
+      // ігноруємо порожні/неправильні якорі
+      if (!href || href === "#") return;
+
+      const target = document.querySelector(href);
+      if (!target) return;
+
+      e.preventDefault();
+
+      // позиція елемента з поправкою на шапку
+      const top =
+        target.getBoundingClientRect().top + window.pageYOffset - headerH - 8; // -8px запас
+      window.scrollTo({ top, behavior: "smooth" });
+    });
+  });
+
+  // бонус: щоб браузер якір із URL теж прокручував з відступом
+  if (location.hash) {
+    const target = document.querySelector(location.hash);
+    if (target) {
+      setTimeout(() => {
+        const top =
+          target.getBoundingClientRect().top + window.pageYOffset - headerH - 8;
+        window.scrollTo({ top, behavior: "smooth" });
+      }, 0);
+    }
+  }
+}
+
+function setupBurgerMenu(opts = {}) {
+  const btnSel = opts.buttonSelector ?? ".burger";
+  const navSel = opts.navSelector ?? "#mainnav";
+  const openCls = opts.openClass ?? "is-open";
+
+  const btn = document.querySelector(btnSel);
+  const nav = document.querySelector(navSel);
+  if (!btn || !nav) return;
+
+  btn.setAttribute("aria-controls", nav.id || "");
+  btn.setAttribute("aria-expanded", "false");
+
+  btn.addEventListener("click", (e) => {
+    const isOpen = nav.classList.toggle(openCls);
+    btn.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  nav.addEventListener("click", (e) => {
+    const a = e.target.closest("a");
+    if (a) {
+      nav.classList.remove(openCls);
+      btn.setAttribute("aria-expanded", "false");
+    }
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      nav.classList.remove(openCls);
+      btn.setAttribute("aria-expanded", "false");
+    }
+  });
 }

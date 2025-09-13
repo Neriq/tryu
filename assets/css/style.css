@@ -17,6 +17,10 @@ body {
   margin: 0;
   padding: 0;
 }
+html {
+  scroll-behavior: smooth;
+}
+
 main > section {
   scroll-margin-top: var(--header-h);
 }
@@ -104,6 +108,26 @@ body {
 .nav__link:hover {
   text-decoration: none;
   background: rgba(255, 255, 255, 0.08);
+}
+
+.nav__link.is-active {
+  color: var(--brand);
+  opacity: 1.2;
+}
+
+/* Бургер-меню (N3) — приклад мобільного стану */
+.burger { display: none; font-size: 24px; background: none; border: 0; color: #fff; }
+@media (max-width: 720px){
+  .burger { display: inline-block; }               /* показуємо кнопку на мобілці */
+  .nav {                                           /* меню стає випадаючим */
+    position: absolute; left: 0; right: 0; top: 56px;
+    background: #0f172a; display: grid; gap: 8px; padding: 12px 16px;
+    transform: translateY(-20px); opacity: 0; pointer-events: none;
+    transition: transform .2s, opacity .2s;
+  }
+  .nav.is-open {                                   /* коли відкрито — клас із N3 */
+    transform: translateY(0); opacity: 1; pointer-events: auto;
+  }
 }
 
 .hero {
