@@ -24,14 +24,17 @@ html {
 main > section {
   scroll-margin-top: var(--header-h);
 }
+.brand {
+  font-size: clamp(28px, 44.5vw, 20px);
+}
 
 h1 {
   font-size: clamp(28px, 4.5vw, 44px);
-  margin-bottom: 0.5em;
+  margin: 0.5em;
 }
 h2 {
   font-size: clamp(22px, 3.2vw, 30px);
-  margin-bottom: 0 0 0.75em;
+  margin: 0 0 0.75em;
 }
 h3 {
   font-size: clamp(18px, 2.4vw, 22px);
@@ -116,18 +119,44 @@ body {
 }
 
 /* Бургер-меню (N3) — приклад мобільного стану */
-.burger { display: none; font-size: 24px; background: none; border: 0; color: #fff; }
-@media (max-width: 720px){
-  .burger { display: inline-block; }               /* показуємо кнопку на мобілці */
-  .nav {                                           /* меню стає випадаючим */
-    position: absolute; left: 0; right: 0; top: 56px;
-    background: #0f172a; display: grid; gap: 8px; padding: 12px 16px;
-    transform: translateY(-20px); opacity: 0; pointer-events: none;
-    transition: transform .2s, opacity .2s;
+.burger {
+  display: none;
+  font-size: 24px;
+  background: none;
+  border: 0;
+  color: #fff;
+}
+@media (max-width: 720px) {
+  .burger {
+    display: inline-block;
+  } /* показуємо кнопку на мобілці */
+  .nav {
+    /* меню стає випадаючим */
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 56px;
+    background: #0f172a;
+    display: grid;
+    gap: 8px;
+    padding: 12px 16px;
+    transform: translateY(-20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.2s, opacity 0.2s;
   }
-  .nav.is-open {                                   /* коли відкрито — клас із N3 */
-    transform: translateY(0); opacity: 1; pointer-events: auto;
+  .nav.is-open {
+    /* коли відкрито — клас із N3 */
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
   }
+}
+
+.nav__link.is-active {
+  color: var(--brand);
+  text-decoration: underline;
+  opacity: 1;
 }
 
 .hero {
@@ -202,8 +231,19 @@ body {
 }
 
 .card:hover {
-  transform: translate(-4px);
+  transform: translateY(-4px);
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+}
+
+.card {
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.card.reveal {
+  transform: translateY(0);
+  opacity: 1;
+  transition: all 0.6 ease;
 }
 
 .grid-3 {
@@ -304,10 +344,9 @@ body {
 
 .hero h1,
 .hero p,
-.hero,
-.btn {
-  opacity: 0.3;
-  animation: fadeInUp 0.6 ease forwards;
+.hero {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards;
 }
 
 .hero h1 {
@@ -321,15 +360,4 @@ body {
 .hero,
 .btn {
   animation-delay: 0.5s;
-}
-
-.card {
-  transform: translateY(30px);
-  opacity: 0;
-}
-
-.card.reveal {
-  transform: translateY(0);
-  opacity: 1;
-  transition: all 0.6 ease;
 }
