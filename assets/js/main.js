@@ -155,6 +155,18 @@ function setupBurgerMenu(opts = {}) {
       btn.setAttribute("aria-expanded", "false");
     }
   });
+
+  document.addEventListener("click", (e) => {
+    const isOpen = nav.classList.contains(openCls);
+    if (!isOpen) return;
+    const clickedInsideNav = e.target.closest(navSel);
+    const clickedBtn = e.target.closest(btnSel);
+    if (!clickedInsideNav && !clickedBtn) {
+      nav.classList.remove(openCls);
+      btn.setAttribute("aria-expanded", "false");
+    }
+  });
+
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       nav.classList.remove(openCls);

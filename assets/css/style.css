@@ -84,6 +84,7 @@ body {
 }
 
 .site-header .container {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -122,25 +123,51 @@ body {
     display: inline-block;
   } /* показуємо кнопку на мобілці */
   .nav {
-    /* меню стає випадаючим */
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 56px;
+    top: calc(var(--header-h));
+    right: 16px;
+    left: auto;
+    width: min(120px, calc(100% - 32%));
+
     background: #0f172a;
+    border: 1pxs solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
     display: grid;
     gap: 8px;
-    padding: 12px 16px;
-    transform: translateY(-20px);
+    padding: 10px;
+
+    transform: translateY(-8px) scale(0.98);
     opacity: 0;
+    max-height: 0;
+    overflow: hidden;
     pointer-events: none;
-    transition: transform 0.2s, opacity 0.2s;
+
+    transition: opacity 0.22s ease,
+      transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1), max-heigh 0.28s ease;
   }
   .nav.is-open {
     /* коли відкрито — клас із N3 */
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     opacity: 1;
+    max-height: 320px;
     pointer-events: auto;
+  }
+
+  .nav__link {
+    padding: 10px 12px;
+    text-align: left;
+    border-radius: 10px;
+  }
+  .nav__link:active {
+    transform: translateY(1px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav,
+  .nav.is-open {
+    transition: none;
   }
 }
 
