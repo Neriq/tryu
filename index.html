@@ -61,9 +61,12 @@
             <div class="container">
                 <h2>Контакти</h2>
                 <form id="contact-form" class="form">
-                    <input type="text" id="name" placeholder="Ім’я">
-                    <input type="email" id="email" placeholder="Email">
+                    <input type="text" id="name" placeholder="Ім’я"> <span id="err-name" class="help-error"
+                        hidden></span>
+                    <input type="email" id="email" placeholder="Email"> <span id="err-name" class="help-error"
+                        hidden></span>
                     <textarea id="message" placeholder="Ваше повідомлення"></textarea>
+                    <span id="err-message" class="help-error" hidden></span>
                     <button type="submit" class="btn">Надіслати</button>
                 </form>
                 <p id="response" class="muted" aria-live="polite"></p>

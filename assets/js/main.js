@@ -46,6 +46,13 @@ function setupContactForm() {
     );
     form.reset();
   });
+
+  function markError(input, help, text) {
+    input.classList.add("input-error");
+    input.setAttribute("aria-invalid", "true");
+    help.textContent = text;
+    help.hidden = false;
+  }
 }
 
 /** Допоміжна: показ повідомлення */
@@ -53,25 +60,6 @@ function showMessage(node, text, isMuted) {
   node.textContent = text;
   if (isMuted) node.classList.add("muted");
   else node.classList.remove("muted");
-}
-
-/** (Опціонально) рендер списку проєктів із даних */
-function renderProjects() {
-  const projects = [
-    { title: "Лендінг", desc: "Простий адаптивний лендінг на HTML+CSS." },
-    { title: "Міні-блог", desc: "Список статей рендериться з JS-масиву." },
-    { title: "Контакт-форма", desc: "Валідація на клієнті, далі бекенд." },
-  ];
-  const wrap = document.querySelector("#projects");
-  if (!wrap) return;
-
-  wrap.innerHTML = ""; // очистити існуюче
-  for (const p of projects) {
-    const card = document.createElement("article");
-    card.className = "card";
-    card.innerHTML = `<h3>${p.title}</h3><p class="muted">${p.desc}</p>`;
-    wrap.appendChild(card);
-  }
 }
 
 const PROJECTS = [
@@ -141,44 +129,6 @@ function setupScrollAnimations() {
     { threshold: 0.2 }
   );
   cards.forEach((c) => io.observe(c));
-}
-
-function setupSmoothScroll() {
-  const links = document.querySelectorAll('a[href^="#"]');
-
-  // висота шапки, якщо вона sticky
-  const header = document.querySelector(".site-header");
-  const headerH = header ? header.offsetHeight : 0;
-
-  links.forEach((link) => {
-    link.addEventListener("click", (e) => {
-      const href = link.getAttribute("href");
-      // ігноруємо порожні/неправильні якорі
-      if (!href || href === "#") return;
-
-      const target = document.querySelector(href);
-      if (!target) return;
-
-      e.preventDefault();
-
-      // позиція елемента з поправкою на шапку
-      const top =
-        target.getBoundingClientRect().top + window.pageYOffset - headerH - 8; // -8px запас
-      window.scrollTo({ top, behavior: "smooth" });
-    });
-  });
-
-  // бонус: щоб браузер якір із URL теж прокручував з відступом
-  if (location.hash) {
-    const target = document.querySelector(location.hash);
-    if (target) {
-      setTimeout(() => {
-        const top =
-          target.getBoundingClientRect().top + window.pageYOffset - headerH - 8;
-        window.scrollTo({ top, behavior: "smooth" });
-      }, 0);
-    }
-  }
 }
 
 function setupBurgerMenu(opts = {}) {

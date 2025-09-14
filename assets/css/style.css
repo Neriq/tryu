@@ -25,7 +25,7 @@ main > section {
   scroll-margin-top: var(--header-h);
 }
 .brand {
-  font-size: clamp(28px, 44.5vw, 20px);
+  font-size: clamp(24px, 2.5vw, 30px);
 }
 
 h1 {
@@ -38,7 +38,7 @@ h2 {
 }
 h3 {
   font-size: clamp(18px, 2.4vw, 22px);
-  margin-bottom: 0 0 0.5em;
+  margin: 0 0 0.5em;
 }
 p {
   font-size: clamp(15px, 1.8vw, 18px);
@@ -48,10 +48,6 @@ p {
   max-width: var(--max);
   margin: 0 auto;
   padding: 0 16px;
-}
-
-.section {
-  padding: clamp(32px, 6vw, 72px) 0;
 }
 
 body {
@@ -71,6 +67,7 @@ body {
 .section {
   max-width: var(--max);
   margin: 0 auto;
+  padding: clamp(32px, 6vw, 72px) 0;
 }
 
 .site-header,
@@ -99,7 +96,6 @@ body {
   gap: 12px;
   justify-content: flex-end;
   flex-wrap: wrap;
-  gap: 14px;
 }
 .nav__link {
   color: #fff;
@@ -111,11 +107,6 @@ body {
 .nav__link:hover {
   text-decoration: none;
   background: rgba(255, 255, 255, 0.08);
-}
-
-.nav__link.is-active {
-  color: var(--brand);
-  opacity: 1.2;
 }
 
 /* Бургер-меню (N3) — приклад мобільного стану */
@@ -239,11 +230,10 @@ body {
   transform: translateY(30px);
   opacity: 0;
 }
-
 .card.reveal {
   transform: translateY(0);
   opacity: 1;
-  transition: all 0.6 ease;
+  transition: all 0.6s ease;
 }
 
 .grid-3 {
@@ -296,6 +286,16 @@ body {
   resize: vertical;
 }
 
+.input-error {
+  border-color: #ef4444 !important;
+  outline: none;
+}
+.help-error {
+  color: #ef4444;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
 :focus-visible {
   outline: 2px solid var(--brand);
   outline-offset: 2px;
@@ -342,22 +342,21 @@ body {
   }
 }
 
+/* ✅ Анімуємо тільки контент hero, а не всю секцію і не всі кнопки на сайті */
 .hero h1,
 .hero p,
-.hero {
+.hero .btn {
   opacity: 0;
   animation: fadeInUp 0.6s ease forwards;
 }
-
 .hero h1 {
   animation-delay: 0.1s;
 }
-
 .hero p {
   animation-delay: 0.3s;
 }
-
-.hero,
-.btn {
+.hero .btn {
   animation-delay: 0.5s;
 }
+
+/* Картки при скролі */
