@@ -209,8 +209,8 @@ body {
       rgba(15, 23, 42, 0) 100%
     ),
     image-set(
-      url("https://github.com/Neriq/tryu/tree/main/images/4.png") 1x,
-      url("https://github.com/Neriq/tryu/tree/main/images/4.png") 2x
+      url("https://github.com/Neriq/tryu/blob/main/images/4.png?raw=true") 1x,
+      url("https://github.com/Neriq/tryu/blob/main/images/4.png?raw=true") 2x
     );
 
   background-size: cover;
