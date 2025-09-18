@@ -21,12 +21,19 @@ function setupContactForm() {
   const response = document.querySelector("#response");
   if (!form || !response) return;
 
+
+
   form.addEventListener("submit", (e) => {
     e.preventDefault();
+
+    // спочатку очистимо попередні помилки
+    clearErrors();
 
     const name = form.querySelector("#name")?.value.trim();
     const email = form.querySelector("#email")?.value.trim();
     const message = form.querySelector("#message")?.value.trim();
+
+
 
     if (!name || !email || !message) {
       showMessage(response, "Будь ласка, заповніть усі поля.", true);
@@ -47,12 +54,7 @@ function setupContactForm() {
     form.reset();
   });
 
-  function markError(input, help, text) {
-    input.classList.add("input-error");
-    input.setAttribute("aria-invalid", "true");
-    help.textContent = text;
-    help.hidden = false;
-  }
+
 }
 
 /** Допоміжна: показ повідомлення */
