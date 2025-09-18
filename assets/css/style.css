@@ -208,7 +208,10 @@ body {
       rgba(15, 23, 42, 0.2) 65%,
       rgba(15, 23, 42, 0) 100%
     ),
-    image-set(url("./images/4.png") 1x, url("./images/4.png") 2x);
+    image-set(
+      url("https://github.com/Neriq/tryu/tree/main/images/4.png") 1x,
+      url("https://github.com/Neriq/tryu/tree/main/images/4.png") 2x
+    );
 
   background-size: cover;
   background-position: center;
@@ -258,14 +261,12 @@ body {
   cursor: pointer;
   transition: filter 0.15s;
   font-weight: 600;
-
 }
 
 .btn--primary {
   background-color: var(--brand);
   color: #fff;
   border-color: transparent;
-
 }
 .btn--primary {
   box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
