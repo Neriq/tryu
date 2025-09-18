@@ -208,7 +208,7 @@ body {
       rgba(15, 23, 42, 0.2) 65%,
       rgba(15, 23, 42, 0) 100%
     ),
-    image-set(url("../images/4.png") 1x, url("../images/4.png") 2x);
+    image-set(url("./images/4.png") 1x, url("./images/4.png") 2x);
 
   background-size: cover;
   background-position: center;
