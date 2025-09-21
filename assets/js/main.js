@@ -21,8 +21,6 @@ function setupContactForm() {
   const response = document.querySelector("#response");
   if (!form || !response) return;
 
-
-
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -32,8 +30,6 @@ function setupContactForm() {
     const name = form.querySelector("#name")?.value.trim();
     const email = form.querySelector("#email")?.value.trim();
     const message = form.querySelector("#message")?.value.trim();
-
-
 
     if (!name || !email || !message) {
       showMessage(response, "Будь ласка, заповніть усі поля.", true);
@@ -53,8 +49,6 @@ function setupContactForm() {
     );
     form.reset();
   });
-
-
 }
 
 /** Допоміжна: показ повідомлення */
@@ -176,3 +170,80 @@ function setupBurgerMenu(opts = {}) {
     }
   });
 }
+
+const input = document.querySelector("#user-input");
+const addBtn = document.querySelector("#add-btn");
+const list = document.querySelector("#list");
+const msg = document.querySelector("#msg");
+
+function showMessage(text, isError = false) {
+  msg.textContent = text;
+  msg.style.color = isError ? "#ef4444" : "";
+}
+
+addBtn.addEventListener("click", () => {
+  const text = (input.value ?? "").trim();
+
+  if (!text) {
+    input.classList.add("input-error");
+    showMessage("Введи текст перед додаванням", true);
+    input.focus();
+    return;
+  }
+
+  const li = document.createElement("li");
+  li.textContent = true;
+
+  const delBtn = document.createElement("button");
+  delBtn.textContent = "x";
+  delBtn.style.marginLeft = "8px";
+  delBtn.addEventListener("click", () => {
+    li.remove();
+    saveList();
+  });
+
+  li.appendChild(delBtn);
+  list.appendChild(li);
+
+  input.value = "";
+  input.classList.remove("input-error");
+  showMessage("Додано ✔️");
+
+  saveList();
+});
+
+input.addEventListener("input", () => {
+  if (input.classList.contains("input-error")) {
+    input.classList.remove("input-error");
+    showMessage("");
+  }
+});
+
+function saveList() {
+  const items = Array.from(list.querySelectorAll("li"))
+    .map((li) => li.firstChild?.textContent ?? "")
+    .filter(Boolean);
+  localStorage.setItem("myList", JSON.stringify(items));
+}
+
+function loadList() {
+  const raw = localStorage.getItem("myList");
+  if (!raw) return;
+  const items = JSON.parse(raw);
+
+  items.forEach((text) => {
+    const li = document.createElement("li");
+    li.textContent = text;
+    const delBtn = document.createElement("button");
+    delBtn.textContent = "x";
+    delBtn.style.marginLeft = "8px";
+    delBtn.addEventListener("click", () => {
+      li.remove();
+      saveList();
+    });
+    li.appendChild(delBtn);
+    list.appendChild(li);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", loadList);
