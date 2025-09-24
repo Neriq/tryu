@@ -173,77 +173,227 @@ function setupBurgerMenu(opts = {}) {
 
 const input = document.querySelector("#user-input");
 const addBtn = document.querySelector("#add-btn");
-const list = document.querySelector("#list");
-const msg = document.querySelector("#msg");
+const listEl = document.querySelector("#list");
+const msgEl = document.querySelector("#msg");
 
-function showMessage(text, isError = false) {
-  msg.textContent = text;
-  msg.style.color = isError ? "#ef4444" : "";
+let items = [];
+const LS_KEY = "myList.v2";
+
+function setMsg(text = "", isError = false) {
+  msgEl.textContent = text;
+  msgEl.style.color = isError ? "#ef4444" : "";
 }
+
+function uid() {
+  return Math.random().toString(36).slice(2, 9);
+}
+
+function render() {
+  listEl.innerHTML = "";
+  const frag = document.createDocumentFragment();
+
+  items.forEach((item) => {
+    const li = document.createElement("li");
+    li.dataset.id = item.id;
+    li.tabIndex = 0;
+
+    const span = document.createElement("span");
+    span.textContent = item.text;
+    span.className = "item-text";
+
+    const del = document.createElement("button");
+    del.textContent = "x";
+    del.className = "item-del";
+    del.ariaLabel = "Видалити пункт";
+
+    li.append(span, del);
+    frag.appendChild(li);
+  });
+
+  listEl.appendChild(frag);
+}
+
+function save() {
+  localStorage.setItem(LS_KEY, JSON.stringify(items));
+}
+
+function load() {
+  const raw = localStorage.getItem(LS_KEY);
+  if (!raw) return;
+  try {
+    const arr = JSON.parse(raw);
+    if (Array.isArray(arr)) items = arr;
+  } catch {}
+}
+
+function addItem(text) {
+  items.push({ id: uid(), text });
+  save();
+  render();
+}
+
+function removeItem(id) {
+  items = items.filter((x) => x.id !== id);
+  save();
+  render();
+}
+
+function updateItem(id, text) {
+  const it = items.find((x) => x.id === id);
+  if (!it) return;
+  it.text = text;
+  save();
+  render();
+}
+
+input.addEventListener("keydown", (e) => {
+  // слухаємо натискання клавіш у полі вводу
+  if (e.key === "Enter") {
+    // якщо натиснули Enter
+    e.preventDefault(); // на випадок, якщо колись обгорнеш у <form>
+    addBtn.click(); // повторно використовуємо вже існуючий обробник кліку
+  }
+});
 
 addBtn.addEventListener("click", () => {
   const text = (input.value ?? "").trim();
-
   if (!text) {
     input.classList.add("input-error");
-    showMessage("Введи текст перед додаванням", true);
+    setMsg("Введи текст перед додаванням", true);
     input.focus();
     return;
   }
-
-  const li = document.createElement("li");
-  li.textContent = true;
-
-  const delBtn = document.createElement("button");
-  delBtn.textContent = "x";
-  delBtn.style.marginLeft = "8px";
-  delBtn.addEventListener("click", () => {
-    li.remove();
-    saveList();
-  });
-
-  li.appendChild(delBtn);
-  list.appendChild(li);
-
+  addItem(text);
   input.value = "";
   input.classList.remove("input-error");
-  showMessage("Додано ✔️");
-
-  saveList();
+  setMsg("Додано");
 });
 
 input.addEventListener("input", () => {
   if (input.classList.contains("input-error")) {
     input.classList.remove("input-error");
-    showMessage("");
+    setMsg("");
   }
 });
 
-function saveList() {
-  const items = Array.from(list.querySelectorAll("li"))
-    .map((li) => li.firstChild?.textContent ?? "")
-    .filter(Boolean);
-  localStorage.setItem("myList", JSON.stringify(items));
-}
+listEl.addEventListener("click", (e) => {
+  const li = e.target.closest("li");
+  if (!li) return;
+  const id = li.dataset.id;
 
-function loadList() {
-  const raw = localStorage.getItem("myList");
-  if (!raw) return;
-  const items = JSON.parse(raw);
+  if (e.target.matches(".item-del")) {
+    removeItem(id);
+  }
+});
 
-  items.forEach((text) => {
-    const li = document.createElement("li");
-    li.textContent = text;
-    const delBtn = document.createElement("button");
-    delBtn.textContent = "x";
-    delBtn.style.marginLeft = "8px";
-    delBtn.addEventListener("click", () => {
-      li.remove();
-      saveList();
-    });
-    li.appendChild(delBtn);
-    list.appendChild(li);
+listEl.addEventListener("dblclick", (e) => {
+  const span = e.target.closest(".item-text");
+  if (!span) return;
+  const li = span.closest("li");
+  const id = li.dataset.id;
+  const old = span.textContent;
+
+  const edit = document.createElement("input");
+  edit.type = "text";
+  edit.value = old;
+  edit.className = "edit-input";
+  span.replaceWith(edit);
+  edit.focus();
+
+  const commit = () => {
+    const val = (edit.value ?? "").trim();
+    if (!val) {
+      cancel();
+      return;
+    }
+    updateItem(id, val);
+  };
+
+  const cancel = () => {
+    render();
+  };
+
+  edit.addEventListener("keydown", (ev) => {
+    if (ev.key === "Enter") commit();
+    else if (ev.key === "Escape") cancel();
   });
+  edit.addEventListener("blur", commit);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  load();
+  render();
+});
+
+const POSTS_API = "https://jsonplaceholder.typicode.com/posts?_limit=6";
+const postsListEl = document.querySelector("#posts-list");
+const postsStatusEl = document.querySelector("#posts-status"); // де показувати "Йде завантаження..." / помилки
+const loadBtn = document.querySelector("#load-posts");
+
+let postsState = [];
+let currentController = null;
+
+function setStatus(text = "", type = "") {
+  postsStatusEl.textContent = text;
+  postsStatusEl.classList.remove("status--loading", "status-error");
+  if (type) postsStatusEl.classList.add(type);
 }
 
-document.addEventListener("DOMContentLoaded", loadList);
+function renderPosts() {
+  postsListEl.innerHTML = "";
+  const frag = document.createDocumentFragment();
+
+  postsState.forEach((p) => {
+    const card = document.createElement("article");
+    card.className = "post-card";
+    const h3 = document.createElement("h3");
+    h3.textContent = p.title;
+    const body = document.createElement("p");
+    body.textContent = p.body;
+    card.append(h3, body);
+    frag.appendChild(card);
+  });
+
+  postsListEl.appendChild(frag);
+}
+
+async function fetchPosts() {
+  if (currentController) currentController.abort();
+
+  currentController = new AbortController();
+  const { signal } = currentController;
+
+  try {
+    setStatus("Йде завантаження...", "status-loading");
+    loadBtn.disabled = true;
+
+    const res = await fetch(POSTS_API, { signal });
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    if (!Array.isArray(data)) {
+      throw new Error("Unexpected payload");
+    }
+    postsState = data.map(({ id, title, body }) => ({ id, title, body }));
+
+    renderPosts();
+    setStatus("Готово");
+  } catch (err) {
+    setStatus("Помилка завантаження. Спробуйте ще раз.", "status--error");
+  } finally {
+    loadBtn.disabled = false;
+    currentController = null;
+  }
+}
+
+loadBtn.addEventListener("click", () => {
+  fetchPosts();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  // fetchPosts();
+});
